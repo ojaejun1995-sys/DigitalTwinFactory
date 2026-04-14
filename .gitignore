@@ -1,0 +1,15 @@
+﻿# UE5 Build
+Binaries/
+Intermediate/
+DerivedDataCache/
+Saved/
+.vs/
+.idea/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Node.js
+Scripts/node_modules/

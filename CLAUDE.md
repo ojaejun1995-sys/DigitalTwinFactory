@@ -84,3 +84,22 @@ Start order: broker → bridge → signalling → UE5 (with PS flags) → browse
 ## Notes
 - All logs use `[<ClassName>]` prefix (e.g. `[MQTTSubsystem]`, `[DigitalTwinManager]`) under dedicated log categories `LogMQTTSubsystem` / `LogDigitalTwinManager`. The bridge logs with a `[ws_bridge]` prefix.
 - To move the bridge off 9001 (e.g. to keep Mosquitto's WS listener), set `WS_PORT=9002 node ws_bridge.js` and update `ADigitalTwinManager::BrokerUrl` accordingly.
+
+## 개발 환경
+- IDE: JetBrains Rider (UE5 빌드/디버깅), Antigravity (스크립트/Claude Code)
+- Claude Code + oh-my-claudecode (OMC) 플러그인
+- GitHub: https://github.com/ojaejun1995-sys/DigitalTwinFactory
+
+## PowerShell 단축키
+- `dt`: 디지털 트윈 프로젝트 + Claude Code
+- `bridge`: Node.js WS 브리지 실행
+- `sensor`: Python 시뮬레이터 실행
+
+## 포트 정리
+| 포트 | 서비스 |
+|------|--------|
+| 1883 | Mosquitto MQTT Broker |
+| 9001 | WebSocket Bridge (ws_bridge.js) |
+| 80   | Pixel Streaming HTTP |
+| 8888 | Pixel Streaming Streamer |
+| 8889 | Pixel Streaming SFU |

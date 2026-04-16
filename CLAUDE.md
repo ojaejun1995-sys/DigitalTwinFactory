@@ -47,6 +47,40 @@ Order matters: the bridge needs the broker up to subscribe, and UE5 needs the br
 ## Module dependencies
 `DigitalTwinFactory.Build.cs` requires `WebSockets`, `Json`, `JsonUtilities` (private) alongside the default UE modules.
 
+## Pixel Streaming 2
+
+Streams the UE5 viewport to a web browser via WebRTC.
+
+### Port map (no conflicts)
+| Service              | Port | Protocol |
+|----------------------|------|----------|
+| Mosquitto MQTT       | 1883 | TCP      |
+| MQTT-WS bridge       | 9001 | WS       |
+| Signalling HTTP      | 80   | HTTP     |
+| Signalling Streamer  | 8888 | WS       |
+| Signalling SFU       | 8889 | WS       |
+
+### Tooling (`Scripts/`)
+- `setup_signalling.bat` — downloads Pixel Streaming Infrastructure (signalling server) from GitHub for UE 5.7. Run once.
+- `start_signalling.bat` — starts the signalling server (HTTP 80, Streamer 8888). Auto-runs setup if needed.
+- `run_ue5_pixelstreaming.bat` — launches UE5 Editor with `-AudioMixer -PixelStreamingURL=ws://localhost:8888 -RenderOffScreen`.
+
+### Running with Pixel Streaming
+
+```bash
+# From Scripts/, after MQTT stack is already running:
+
+# 5. Signalling server (first time runs setup automatically)
+start_signalling.bat
+
+# 6. UE5 with Pixel Streaming flags
+run_ue5_pixelstreaming.bat
+
+# 7. Open browser → http://localhost to view the stream
+```
+
+Start order: broker → bridge → signalling → UE5 (with PS flags) → browser.
+
 ## Notes
 - All logs use `[<ClassName>]` prefix (e.g. `[MQTTSubsystem]`, `[DigitalTwinManager]`) under dedicated log categories `LogMQTTSubsystem` / `LogDigitalTwinManager`. The bridge logs with a `[ws_bridge]` prefix.
 - To move the bridge off 9001 (e.g. to keep Mosquitto's WS listener), set `WS_PORT=9002 node ws_bridge.js` and update `ADigitalTwinManager::BrokerUrl` accordingly.
